@@ -4,28 +4,35 @@
 
     <div class="brands-grid">
       <div class="brand-card" v-for="(brand, index) in brands" :key="index">
-        <img :src="brand.image" :alt="brand.name" />
-        <h3>{{ brand.name }}</h3>
-        <p>{{ brand.description }}</p>
+        <div class="logo-container">
+          <img :src="brand.image" :alt="brand.name" class="brand-logo" />
+          <div class="platform"></div>
+        </div>
+        <h3 class="brand-name">{{ brand.name }}</h3>
+        <p class="brand-desc">{{ brand.description }}</p>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import BTigers from '../assets/BTigers.png'
+import KBTigers from '../assets/KBTigers.png'
+import LTigers from '../assets/LBTigers.png'
+
 const brands = [
   {
-    image: '@/assets/brand1.png',
+    image: BTigers,
     name: 'BLUE TIGERS',
     description: 'Our global esports and gaming partner network.',
   },
   {
-    image: '@/assets/brand2.png',
+    image: KBTigers,
     name: 'KOCHI BLUE TIGERS',
     description: 'Regional branch delivering next-level gaming innovation.',
   },
   {
-    image: '@/assets/brand3.png',
+    image: LTigers,
     name: 'BLUE TIGERS LONDON',
     description: 'Expanding innovation across Europe and beyond.',
   },
@@ -43,8 +50,9 @@ const brands = [
 
 .section-title {
   font-size: 1.8rem;
+  font-weight: 600;
   letter-spacing: 1px;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
   color: #b37cf7;
 }
 
@@ -52,39 +60,61 @@ const brands = [
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .brand-card {
-  background: #111;
+  background: linear-gradient(180deg, #0a0a0a, #151515);
   border-radius: 20px;
-  width: 340px;
-  padding: 2rem;
+  width: 260px;
+  padding: 2rem 1.5rem 2.5rem;
   text-align: center;
-  box-shadow: 0 0 20px rgba(179, 124, 247, 0.2);
+  box-shadow: 0 0 30px rgba(179, 124, 247, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
 .brand-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 0 30px rgba(179, 124, 247, 0.35);
+  transform: translateY(-10px);
+  box-shadow: 0 0 35px rgba(179, 124, 247, 0.4);
 }
 
-.brand-card img {
-  width: 100px;
-  height: 100px;
+.logo-container {
+  position: relative;
+  margin-bottom: 1.8rem;
+}
+
+.brand-logo {
+  width: 120px;
+  height: 120px;
   object-fit: contain;
-  margin-bottom: 1.5rem;
+  z-index: 2;
+  position: relative;
 }
 
-.brand-card h3 {
+.platform {
+  width: 80%;
+  height: 14px;
+  background: #0d0d0d;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 8px 15px rgba(179, 124, 247, 0.3);
+}
+
+.brand-name {
   font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
   color: #b37cf7;
+  margin-bottom: 0.5rem;
 }
 
-.brand-card p {
+.brand-desc {
   font-size: 0.9rem;
-  opacity: 0.8;
+  color: #ccc;
+  opacity: 0.9;
 }
 </style>

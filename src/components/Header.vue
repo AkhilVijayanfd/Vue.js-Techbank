@@ -1,14 +1,14 @@
 <template>
   <header class="header">
     <nav class="nav-links">
-      <a href="#">Home</a>
+      <router-link to="/">Home</router-link>
       <a href="#">Products</a>
       <a href="#">Teams</a>
       <a href="#">Career</a>
       <a href="#">Blog</a>
     </nav>
 
-    <button class="contact-btn">Contact Us</button>
+    <router-link to="/contact" class="contact-btn">Contact Us</router-link>
   </header>
 </template>
 
@@ -42,6 +42,10 @@
   color: #b37cf7; /* purple accent matching Figma gradient */
 }
 
+.nav-links a.router-link-active {
+  color: #b37cf7;
+}
+
 .contact-btn {
   background-color: transparent;
   border: 1.5px solid #ffffff;
@@ -51,6 +55,8 @@
   cursor: pointer;
   font-size: 0.95rem;
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .contact-btn:hover {

@@ -1,26 +1,25 @@
 <template>
   <section class="home">
-    <h2>Welcome to TECHBANK</h2>
-    <p>Your reliable digital banking partner.</p>
+    <img :src="homeimage" alt="TechBank Home Banner" class="home-image" />
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import homeimage from '../assets/homeimage.png'
+</script>
 
 <style scoped>
 .home {
-  width: 1440px;
-  text-align: center;
-  padding: 3rem 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-h2 {
-  color: #42b883;
-  font-size: 2rem;
-}
-
-p {
-  color: #555;
-  margin-top: 0.5rem;
+.home-image {
+  width: 100%;
+  max-width: 1440px;
+  height: 830px;
+  object-fit: cover;
 }
 </style>

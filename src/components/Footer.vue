@@ -5,7 +5,7 @@
       <div class="footer-left">
         <h2 class="footer-logo">TechBank</h2>
         <p class="footer-tagline">ENGINEERING THE FUTURE</p>
-        <button class="contact-btn">CONTACT US</button>
+        <router-link to="/contact" class="contact-btn">CONTACT US</router-link>
         <div class="social-icons">
           <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
           <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -91,6 +91,8 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .contact-btn:hover {

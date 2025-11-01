@@ -1,20 +1,28 @@
 <script setup>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 import Home from './pages/Home.vue'
 import AboutSection from './components/About.vue'
 import ProductsAndTechnologies from './components/ProductsAndTechnologies.vue'
 import BlogsSection from './components/BlogsSection.vue'
+
+const route = useRoute()
+const isHomePage = computed(() => route.path === '/')
 </script>
 
 <template>
   <div class="app">
     <Header />
     <main>
-      <Home />
-      <AboutSection />
-      <ProductsAndTechnologies />
-      <BlogsSection />
+      <router-view />
+      <template v-if="isHomePage">
+        <HomeImage />
+        <AboutSection />
+        <ProductsAndTechnologies />
+        <BlogsSection />
+      </template>
     </main>
     <Footer />
   </div>

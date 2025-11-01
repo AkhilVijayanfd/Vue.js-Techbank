@@ -1,62 +1,97 @@
 <template>
   <header class="header">
+    <div class="logo-section">
+      <img :src="logo" alt="TechBank Logo" class="logo-icon" />
+      <span class="logo-text">TechBank</span>
+    </div>
+
     <nav class="nav-links">
-      <router-link to="/">Home</router-link>
-      <a href="#">Products</a>
-      <a href="#">Teams</a>
-      <a href="#">Career</a>
-      <a href="#">Blog</a>
+      <router-link to="/" class="nav-item">Home</router-link>
+      <a href="#" class="nav-item">Products</a>
+      <a href="#" class="nav-item">Teams</a>
+      <a href="#" class="nav-item">Career</a>
+      <a href="#" class="nav-item">Blog</a>
     </nav>
 
     <router-link to="/contact" class="contact-btn">Contact Us</router-link>
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import logo from '../assets/logo/tblogo.png'
+</script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+@font-face {
+  font-family: 'Nineta';
+  src: url('@/assets/fonts/Nineta-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #000000;
   color: #ffffff;
-  padding: 1.5rem 3rem;
+  padding: 1rem 3rem;
   height: 100px;
   font-family: 'Poppins', sans-serif;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 33px;
+  height: auto;
+}
+
+.logo-text {
+  font-family: 'Nineta', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
 }
 
 .nav-links {
   display: flex;
   gap: 2rem;
+  margin-left: -180px; /* adjust to balance center alignment similar to Figma */
 }
 
-.nav-links a {
+.nav-item {
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 14px;
   transition: color 0.3s ease;
+  font-weight: 400;
 }
 
-.nav-links a:hover {
-  color: #b37cf7; /* purple accent matching Figma gradient */
+.nav-item:hover {
+  color: #b37cf7;
 }
 
-.nav-links a.router-link-active {
+.router-link-active {
   color: #b37cf7;
 }
 
 .contact-btn {
   background-color: transparent;
-  border: 1.5px solid #ffffff;
+  border: 1.2px solid #ffffff;
   color: #ffffff;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1.3rem;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 14px;
   transition: all 0.3s ease;
   text-decoration: none;
-  display: inline-block;
+  font-family: 'Poppins', sans-serif;
 }
 
 .contact-btn:hover {

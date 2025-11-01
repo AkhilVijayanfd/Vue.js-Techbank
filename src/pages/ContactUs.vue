@@ -11,30 +11,39 @@
         <h2 class="contact-title">BUILD THE FUTURE WITH US</h2>
         <h3 class="form-heading">CONTACT US</h3>
 
-        <form class="contact-form">
+        <form class="contact-form" @submit.prevent="handleSubmit">
+          <!-- Name -->
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Enter your name" required />
+            <input type="text" id="name" v-model.trim="form.name" placeholder="Enter your name" />
+            <span v-if="errors.name" class="error">{{ errors.name }}</span>
           </div>
 
+          <!-- Email -->
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Enter your email" required />
+            <input type="email" id="email" v-model.trim="form.email" placeholder="Enter your email" />
+            <span v-if="errors.email" class="error">{{ errors.email }}</span>
           </div>
 
+          <!-- Phone -->
           <div class="form-group">
             <label for="phone">Phone Number</label>
             <div class="phone-input">
               <span class="flag">🇮🇳</span>
-              <input type="tel" id="phone" placeholder="Enter your phone number" required />
+              <input type="tel" id="phone" v-model.trim="form.phone" placeholder="Enter your phone number" />
             </div>
+            <span v-if="errors.phone" class="error">{{ errors.phone }}</span>
           </div>
 
+          <!-- Message -->
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" rows="4" placeholder="Write your message"></textarea>
+            <textarea id="message" v-model.trim="form.message" rows="4" placeholder="Write your message"></textarea>
+            <span v-if="errors.message" class="error">{{ errors.message }}</span>
           </div>
 
+          <!-- Submit -->
           <button type="submit" class="submit-btn">Send Message →</button>
         </form>
       </div>
@@ -42,7 +51,51 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { reactive } from "vue";
+
+const form = reactive({
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+});
+
+const errors = reactive({});
+
+const validate = () => {
+  Object.keys(errors).forEach((key) => delete errors[key]); // clear previous errors
+
+  // Name validation
+  if (!form.name.trim()) errors.name = "Name is required";
+  else if (!/^[A-Za-z\s]+$/.test(form.name)) errors.name = "Please enter a valid name";
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!form.email.trim()) errors.email = "Email is required";
+  else if (!emailRegex.test(form.email)) errors.email = "Enter a valid email address";
+
+  // Phone validation
+  const phoneRegex = /^[0-9]{10}$/;
+  if (!form.phone.trim()) errors.phone = "Phone number is required";
+  else if (!phoneRegex.test(form.phone)) errors.phone = "Enter a valid 10-digit number";
+
+  // Message validation
+  if (!form.message.trim()) errors.message = "Message cannot be empty";
+
+  return Object.keys(errors).length === 0;
+};
+
+const handleSubmit = () => {
+  if (validate()) {
+    alert("✅ Data saved successfully!");
+    form.name = "";
+    form.email = "";
+    form.phone = "";
+    form.message = "";
+  }
+};
+</script>
 
 <style scoped>
 /* -------------------- BASE SECTION -------------------- */
@@ -91,10 +144,10 @@
 /* -------------------- RIGHT FORM -------------------- */
 .contact-right {
   flex: 1;
-  padding-top: 0; /* aligns perfectly with image */
+  padding-top: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* left align form */
+  align-items: flex-start;
 }
 
 .contact-title {
@@ -119,7 +172,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* reduced gap between fields */
+  gap: 0.8rem;
 }
 
 .form-group {
@@ -131,7 +184,7 @@
 .form-group label {
   font-size: 0.85rem;
   color: #aaa;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
 
 .form-group input,
@@ -139,7 +192,7 @@
   background: transparent;
   border: 1px solid #333;
   color: #fff;
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
   font-size: 0.95rem;
   transition: border 0.3s ease;
@@ -177,6 +230,13 @@
   outline: none;
 }
 
+/* -------------------- ERROR TEXT -------------------- */
+.error {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
 /* -------------------- BUTTON -------------------- */
 .submit-btn {
   background: linear-gradient(90deg, #b37cf7, #8b5cf6);
@@ -188,7 +248,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
 }
 
 .submit-btn:hover {
@@ -214,7 +274,7 @@
   }
 
   .contact-form {
-    gap: 1.2rem;
+    gap: 1rem;
   }
 
   .submit-btn {

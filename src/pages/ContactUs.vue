@@ -1,15 +1,12 @@
 <template>
   <section class="contact-section">
     <div class="contact-container">
-      <!-- Left Section (Image + Text) -->
+      <!-- Left Image -->
       <div class="contact-left">
-
-        <h3 class="left-text">
-          LET’S CONNECT AND CREATE THE NEXT BIG THING IN TECH
-        </h3>
+        <img src="../assets/contactImage.png" alt="Contact TechBank" class="contact-image" />
       </div>
 
-      <!-- Right Section (Form) -->
+      <!-- Right Form -->
       <div class="contact-right">
         <h2 class="contact-title">BUILD THE FUTURE WITH US</h2>
         <h3 class="form-heading">CONTACT US</h3>
@@ -35,7 +32,7 @@
 
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" rows="5" placeholder="Write your message"></textarea>
+            <textarea id="message" rows="4" placeholder="Write your message"></textarea>
           </div>
 
           <button type="submit" class="submit-btn">Send Message →</button>
@@ -48,93 +45,104 @@
 <script setup></script>
 
 <style scoped>
+/* -------------------- BASE SECTION -------------------- */
 .contact-section {
   background: #000;
   color: #fff;
-  min-height: 90vh;
-  padding: 4rem 6rem;
-  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  padding: 4rem 5rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  font-family: "Poppins", sans-serif;
 }
 
+/* -------------------- FLEX LAYOUT -------------------- */
 .contact-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   max-width: 1300px;
   width: 100%;
+  gap: 2.5rem;
 }
 
+/* -------------------- LEFT IMAGE -------------------- */
 .contact-left {
-  text-align: center;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .contact-image {
-  width: 85%;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(179, 124, 247, 0.2);
-  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 22px;
+  object-fit: cover;
+  box-shadow: 0 0 25px rgba(179, 124, 247, 0.35);
+  transition: transform 0.3s ease;
 }
 
-.left-text {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #b37cf7;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+.contact-image:hover {
+  transform: scale(1.02);
 }
 
+/* -------------------- RIGHT FORM -------------------- */
 .contact-right {
-  background: rgba(20, 20, 20, 0.85);
-  border-radius: 20px;
-  padding: 2.5rem 3rem;
-  box-shadow: 0 0 20px rgba(179, 124, 247, 0.15);
+  flex: 1;
+  padding-top: 0; /* aligns perfectly with image */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* left align form */
 }
 
 .contact-title {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #b37cf7;
   text-transform: uppercase;
-  margin-bottom: 0.4rem;
   letter-spacing: 1px;
+  margin-bottom: 0.3rem;
 }
 
 .form-heading {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  margin-bottom: 2rem;
   text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
 }
 
+/* -------------------- FORM STYLES -------------------- */
 .contact-form {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1rem; /* reduced gap between fields */
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .form-group label {
-  font-size: 0.9rem;
-  color: #bbb;
-  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.35rem;
 }
 
 .form-group input,
 .form-group textarea {
-  background-color: #111;
+  background: transparent;
   border: 1px solid #333;
   color: #fff;
-  padding: 0.9rem 1rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s ease;
 }
 
 .form-group input:focus,
@@ -143,17 +151,17 @@
   outline: none;
 }
 
+/* -------------------- PHONE INPUT -------------------- */
 .phone-input {
   display: flex;
   align-items: center;
-  background-color: #111;
   border: 1px solid #333;
-  border-radius: 10px;
-  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
 }
 
 .phone-input .flag {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-right: 0.6rem;
 }
 
@@ -161,7 +169,7 @@
   border: none;
   background: transparent;
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.95rem;
   width: 100%;
 }
 
@@ -169,17 +177,18 @@
   outline: none;
 }
 
+/* -------------------- BUTTON -------------------- */
 .submit-btn {
   background: linear-gradient(90deg, #b37cf7, #8b5cf6);
   border: none;
   color: #fff;
-  padding: 0.9rem 2rem;
-  border-radius: 30px;
-  font-size: 1rem;
-  cursor: pointer;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-size: 0.95rem;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
-  width: fit-content;
+  margin-top: 0.5rem;
 }
 
 .submit-btn:hover {
@@ -187,24 +196,29 @@
   box-shadow: 0 4px 15px rgba(179, 124, 247, 0.4);
 }
 
-/* Responsive Design */
+/* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 1024px) {
   .contact-container {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
   .contact-right {
-    margin: 0 auto;
+    align-items: center;
     width: 90%;
   }
 
   .contact-section {
-    padding: 2rem 1.5rem;
+    padding: 2rem;
   }
 
-  .left-text {
-    font-size: 1rem;
+  .contact-form {
+    gap: 1.2rem;
+  }
+
+  .submit-btn {
+    align-self: center;
   }
 }
 </style>

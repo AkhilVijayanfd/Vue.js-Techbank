@@ -3,205 +3,231 @@
     <div class="footer-content">
       <!-- Left Section -->
       <div class="footer-left">
-        <h2 class="footer-logo">TechBank</h2>
-        <p class="footer-tagline">ENGINEERING THE FUTURE</p>
-        <router-link to="/contact" class="contact-btn">CONTACT US</router-link>
-        <div class="social-icons">
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <div class="footer-logo">
+          <img :src="logo" alt="TechBank Logo" class="logo-icon" />
+          <h3 class="footer-title">TechBank</h3>
         </div>
-      </div>
-
-      <!-- Center Section -->
-      <div class="footer-center">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">Teams</a></li>
-          <li><a href="#">Career</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
+        <p class="footer-text">ENGINEERING THE FUTURE</p>
+        <button class="contact-btn">CONTACT US</button>
+        <div class="social-icons">
+          <i class="fab fa-linkedin-in"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-youtube"></i>
+        </div>
       </div>
 
       <!-- Right Section -->
       <div class="footer-right">
-        <h4>Offices</h4>
-        <p>Infopark<br />Kochi – Kerala</p>
-        <p class="footer-email">hi@techbank.com</p>
+        <div class="footer-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Teams</a></li>
+            <li><a href="#">Career</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-office">
+          <h4>Offices</h4>
+          <p>Infopark</p>
+          <p>Kochi - Kerala</p>
+        </div>
       </div>
     </div>
 
     <!-- Bottom Section -->
     <div class="footer-bottom">
       <p>© 2025 TechBank</p>
-      <div class="footer-links">
+      <div class="footer-policies">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms and Conditions</a>
       </div>
     </div>
+
+    <!-- Background Text -->
+    <div class="footer-bg-text">TECHBANK</div>
   </footer>
 </template>
 
-<script setup></script>
+<script setup>
+import logo from "../assets/footerBackground.png";
+</script>
 
 <style scoped>
 .footer {
-  background: linear-gradient(to bottom, #000, #3a0070 60%, #000 100%);
-  color: #fff;
-  padding: 80px 100px 30px;
-  font-family: 'Poppins', sans-serif;
+  position: relative;
+  background: linear-gradient(to bottom, #000000, #10001f 40%, #2a0050 75%, #5a00a1);
+  color: white;
+  padding: 4rem 6rem 2rem;
+  overflow: hidden;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   flex-wrap: wrap;
-  gap: 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 40px;
+  z-index: 2;
+  position: relative;
 }
 
-/* --- LEFT SECTION --- */
 .footer-left {
-  flex: 1;
-  min-width: 250px;
+  max-width: 300px;
 }
 
 .footer-logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.footer-tagline {
-  font-size: 0.9rem;
-  letter-spacing: 1.5px;
-  color: #ccc;
-  margin-bottom: 20px;
+.logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.footer-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footer-text {
+  margin: 1rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  letter-spacing: 0.5px;
 }
 
 .contact-btn {
-  background: none;
-  border: 1px solid #9b59b6;
+  margin: 1rem 0;
+  background: transparent;
+  border: 1px solid #ffffff;
   color: #fff;
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
   cursor: pointer;
-  transition: 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+  transition: all 0.3s;
 }
 
 .contact-btn:hover {
-  background: #9b59b6;
+  background: #b517ff;
+  border-color: #b517ff;
 }
 
-/* --- SOCIAL ICONS --- */
 .social-icons {
   display: flex;
-  gap: 20px;
-  margin-top: 25px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.social-icons a {
-  color: #fff;
-  font-size: 1.3rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: #9b59b6;
-  transform: scale(1.15);
-}
-
-/* --- CENTER SECTION --- */
-.footer-center ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-center li {
-  margin-bottom: 10px;
-}
-
-.footer-center a {
-  color: #ccc;
-  text-decoration: none;
+.social-icons i {
+  font-size: 1.2rem;
+  cursor: pointer;
   transition: color 0.3s;
 }
 
-.footer-center a:hover {
-  color: #9b59b6;
+.social-icons i:hover {
+  color: #b517ff;
 }
 
-/* --- RIGHT SECTION --- */
 .footer-right {
-  min-width: 200px;
+  display: flex;
+  gap: 5rem;
 }
 
-.footer-right h4 {
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: #fff;
+.footer-links ul {
+  list-style: none;
+  padding: 0;
 }
 
-.footer-right p {
-  color: #ccc;
-  font-size: 0.9rem;
-  line-height: 1.4;
+.footer-links ul li {
+  margin: 0.5rem 0;
 }
 
-.footer-email {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #9b59b6;
+.footer-links ul li a {
+  color: #ffffffcc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
-/* --- BOTTOM SECTION --- */
+.footer-links ul li a:hover {
+  color: #b517ff;
+}
+
+.footer-office h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.footer-office p {
+  margin: 0.3rem 0;
+  color: #cccccc;
+}
+
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
-  font-size: 0.85rem;
-  color: #aaa;
-  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 3rem;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  color: #cccccc;
+  z-index: 2;
+  position: relative;
 }
 
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: #aaa;
+.footer-policies a {
+  color: #cccccc;
   text-decoration: none;
+  margin-left: 1.5rem;
   transition: color 0.3s;
 }
 
-.footer-links a:hover {
-  color: #9b59b6;
+.footer-policies a:hover {
+  color: #b517ff;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* BACKGROUND TEXT STYLE */
+.footer-bg-text {
+  position: absolute;
+  bottom: -60px; /* partially hidden */
+  left: 0;
+  font-size: 10rem;
+  font-weight: 800;
+  letter-spacing: 20px;
+  color: rgba(255, 255, 255, 0.05);
+  text-transform: uppercase;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+  line-height: 0.8;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .footer {
+    padding: 3rem 2rem;
+  }
+
   .footer-content {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 2rem;
   }
 
-  .footer {
-    padding: 60px 30px 20px;
-  }
-
-  .footer-bottom {
+  .footer-right {
     flex-direction: column;
-    gap: 10px;
+    gap: 2rem;
+  }
+
+  .footer-bg-text {
+    font-size: 6rem;
+    bottom: -40px;
   }
 }
 </style>

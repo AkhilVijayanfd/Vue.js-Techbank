@@ -1,0 +1,35 @@
+{
+  "blogs": [
+    {
+      "image": "BlogImage1.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    },
+    {
+      "image": "BlogImage2.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    },
+    {
+      "image": "BlogImage3.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    },
+    {
+      "image": "BlogImage1.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    },
+    {
+      "image": "BlogImage2.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    },
+    {
+      "image": "BlogImage3.png",
+      "title": "SMART AI CHATBOT",
+      "desc": "Enhance customer engagement with personalized, AI-driven interactions."
+    }
+  ]
+}
+

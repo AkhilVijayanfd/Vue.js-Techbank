@@ -1,0 +1,71 @@
+{
+  "logo": {
+    "image": "tblogo.png",
+    "title": "TechBank"
+  },
+  "tagline": "ENGINEERING<br />THE FUTURE",
+  "contactButton": {
+    "text": "CONTACT US",
+    "route": "/contact"
+  },
+  "socialLinks": [
+    {
+      "icon": "fab fa-linkedin-in",
+      "url": "#"
+    },
+    {
+      "icon": "fab fa-instagram",
+      "url": "#"
+    },
+    {
+      "icon": "fab fa-twitter",
+      "url": "#"
+    },
+    {
+      "icon": "fab fa-youtube",
+      "url": "#"
+    }
+  ],
+  "navigationLinks": [
+    {
+      "text": "Home",
+      "url": "#"
+    },
+    {
+      "text": "Products",
+      "url": "#"
+    },
+    {
+      "text": "Teams",
+      "url": "#"
+    },
+    {
+      "text": "Career",
+      "url": "#"
+    },
+    {
+      "text": "Blog",
+      "url": "#"
+    }
+  ],
+  "offices": {
+    "title": "Offices",
+    "locations": [
+      "Infopark",
+      "Kochi - Kerala"
+    ]
+  },
+  "copyright": "© 2025 TechBank",
+  "policies": [
+    {
+      "text": "Privacy Policy",
+      "url": "#"
+    },
+    {
+      "text": "Terms and Conditions",
+      "url": "#"
+    }
+  ],
+  "watermark": "TECHBANK"
+}
+

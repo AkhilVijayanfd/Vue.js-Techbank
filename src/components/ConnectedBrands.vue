@@ -1,26 +1,41 @@
 <template>
   <section class="brands-section">
-    <div class="section-header">
-      <p class="sub-text">From One Root, Many Branches</p>
-      <h2 class="section-title">OUR CONNECTED BRANDS</h2>
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading brands...</p>
     </div>
 
-    <div class="brands-grid">
-      <div class="brand-card" v-for="(brand, index) in brands" :key="index">
-        <div class="brand-header">
-          <h3 class="brand-title">{{ brand.name }}</h3>
-          <p class="brand-sub">{{ brand.description }}</p>
+    <!-- Error State -->
+    <div v-else-if="error && brands.length === 0" class="error-container">
+      <p class="error-text">{{ error }}</p>
+      <button @click="fetchBrandsData" class="retry-btn">Retry</button>
+    </div>
 
-          <div class="icon-row">
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-twitter"></i>
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-youtube"></i>
+    <!-- Content -->
+    <div v-else>
+      <div class="section-header">
+        <p class="sub-text">{{ subText }}</p>
+        <h2 class="section-title">{{ sectionTitle }}</h2>
+      </div>
+
+      <div class="brands-grid">
+        <div class="brand-card" v-for="(brand, index) in brands" :key="index">
+          <div class="brand-header">
+            <h3 class="brand-title">{{ brand.name }}</h3>
+            <p class="brand-sub">{{ brand.description }}</p>
+
+            <div class="icon-row">
+              <i class="fab fa-instagram"></i>
+              <i class="fab fa-twitter"></i>
+              <i class="fab fa-facebook"></i>
+              <i class="fab fa-youtube"></i>
+            </div>
           </div>
-        </div>
 
-        <div class="logo-wrapper">
-          <img :src="brand.image" :alt="brand.name" class="brand-logo" />
+          <div class="logo-wrapper">
+            <img :src="brand.image" :alt="brand.name" class="brand-logo" />
+          </div>
         </div>
       </div>
     </div>
@@ -28,27 +43,67 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import BTigers from '../assets/BTigers.png'
 import KBTigers from '../assets/KBTigers.png'
 import LTigers from '../assets/LBTigers.png'
 
-const brands = [
-  {
-    image: BTigers,
-    name: 'BLUE TIGERS',
-    description: 'Fueling the future of film, sports, and technology.',
-  },
-  {
-    image: LTigers, // ✅ swapped here (previously KBTigers)
-    name: 'KOCHI BLUE TIGERS',
-    description: 'A dynamic cricket team redefining the game with passion and power.',
-  },
-  {
-    image: KBTigers, // ✅ swapped here (previously LTigers)
-    name: 'BLUE TIGERS LONDON',
-    description: 'A creative production house bringing bold stories to life.',
-  },
-]
+// Image mapping helper
+const imageMap = {
+  'BTigers.png': BTigers,
+  'KBTigers.png': KBTigers,
+  'LBTigers.png': LTigers
+}
+
+// Reactive state - initialized as empty, will be populated from JSON
+const brands = ref([])
+const sectionTitle = ref('')
+const subText = ref('')
+const loading = ref(true)
+const error = ref(null)
+
+// API endpoint or JSON file path
+const API_URL = '/brands-data.json'
+// Alternative: You can use an actual API endpoint like:
+// const API_URL = 'https://your-api.com/api/brands'
+
+// Fetch brands data from JSON file or API
+const fetchBrandsData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    const response = await fetch(API_URL)
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch brands data: ${response.status} ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    
+    // Map the fetched data and resolve image paths
+    brands.value = (data.brands || []).map(brand => ({
+      ...brand,
+      image: imageMap[brand.image] || brand.image
+    }))
+    
+    // Update section titles from JSON
+    sectionTitle.value = data.sectionTitle || ''
+    subText.value = data.subText || ''
+    
+  } catch (err) {
+    console.error('Error fetching brands data:', err)
+    error.value = err.message
+    // Data will remain empty array, showing error state instead
+  } finally {
+    loading.value = false
+  }
+}
+
+// Fetch data on component mount
+onMounted(() => {
+  fetchBrandsData()
+})
 </script>
 
 <style scoped>
@@ -59,7 +114,7 @@ const brands = [
   font-family: 'Poppins', sans-serif;
 }
 
-/* ✅ Centered section title */
+/*Centered section title */
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -79,7 +134,7 @@ const brands = [
   color: #fff;
 }
 
-/* ✅ 3 Cards aligned in one row */
+/*3 Cards aligned in one row */
 .brands-grid {
   display: flex;
   justify-content: center;
@@ -88,7 +143,7 @@ const brands = [
   gap: 2.5rem;
 }
 
-/* ✅ Card Styling */
+/* Card Styling */
 .brand-card {
   background: linear-gradient(180deg, #0a0a0a, #151515);
   border-radius: 20px;
@@ -106,7 +161,7 @@ const brands = [
   transform: translateY(-8px);
 }
 
-/* ✅ Left aligned content */
+/* Left aligned content */
 .brand-header {
   text-align: left;
 }
@@ -125,7 +180,7 @@ const brands = [
   line-height: 1.4;
 }
 
-/* ✅ Icons with neutral color */
+/* Icons with neutral color */
 .icon-row {
   display: flex;
   gap: 12px;
@@ -144,7 +199,7 @@ const brands = [
   transform: scale(1.1);
 }
 
-/* ✅ Image Section (centered and enlarged) */
+/* Image Section (centered and enlarged) */
 .logo-wrapper {
   position: relative;
   display: flex;
@@ -163,8 +218,71 @@ const brands = [
   margin-bottom: 0;
 }
 
-/* 🚫 Removed the round shadow completely */
+/* Removed the round shadow completely */
 .brand-podium {
   display: none;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #333;
+  border-top-color: #b37cf7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* Error State */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.retry-btn {
+  background: linear-gradient(90deg, #b37cf7, #8b5cf6);
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(179, 124, 247, 0.4);
 }
 </style>

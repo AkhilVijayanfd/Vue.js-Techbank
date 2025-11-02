@@ -5,9 +5,22 @@
       <h3 class="heading-bottom">BLOGS</h3>
     </div>
 
-    <div class="carousel-container">
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading blogs...</p>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error && blogs.length === 0" class="error-container">
+      <p class="error-text">{{ error }}</p>
+      <button @click="fetchBlogsData" class="retry-btn">Retry</button>
+    </div>
+
+    <!-- Carousel Content -->
+    <div v-else class="carousel-container">
       <!-- Left Arrow -->
-      <button class="arrow left" @click="prevSlide">
+      <button class="arrow left" @click="prevSlide" :disabled="loading || blogs.length === 0">
         <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" viewBox="0 0 24 24" stroke="white">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
@@ -34,7 +47,7 @@
       </div>
 
       <!-- Right Arrow -->
-      <button class="arrow right" @click="nextSlide">
+      <button class="arrow right" @click="nextSlide" :disabled="loading || blogs.length === 0">
         <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" viewBox="0 0 24 24" stroke="white">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
@@ -42,7 +55,7 @@
     </div>
 
     <!-- Dots -->
-    <div class="dots">
+    <div v-if="!loading && blogs.length > 0" class="dots">
       <span
         v-for="(dot, index) in blogs.length"
         :key="index"
@@ -54,35 +67,82 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import BlogImage1 from '../assets/BlogImage1.png'
 import BlogImage2 from '../assets/BlogImage2.png'
 import BlogImage3 from '../assets/BlogImage3.png'
 
-const blogs = [
-  { image: BlogImage1, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage2, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage3, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage1, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage2, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage3, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' }
-]
+// Image mapping helper - maps image filenames to imported image modules
+const imageMap = {
+  'BlogImage1.png': BlogImage1,
+  'BlogImage2.png': BlogImage2,
+  'BlogImage3.png': BlogImage3
+}
 
+// Reactive state
+const blogs = ref([])
+const loading = ref(true)
+const error = ref(null)
 const currentIndex = ref(0)
 const visibleItems = 3
 
+// API endpoint or JSON file path
+const API_URL = '/blogs-data.json'
+// Alternative: You can use an actual API endpoint like:
+// const API_URL = 'https://your-api.com/api/blogs'
+
+// Fetch blogs data from JSON file or API
+const fetchBlogsData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    const response = await fetch(API_URL)
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch blogs data: ${response.status} ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    
+    // Map the fetched data and resolve image paths
+    blogs.value = data.blogs.map(blog => ({
+      ...blog,
+      image: imageMap[blog.image] || blog.image // Use mapped image or fallback to original path
+    }))
+    
+    // Reset carousel to start position when data is loaded
+    if (blogs.value.length > 0) {
+      currentIndex.value = visibleItems
+    }
+    
+  } catch (err) {
+    console.error('Error fetching blogs data:', err)
+    error.value = err.message
+    // Data will remain empty array, showing error state instead
+  } finally {
+    loading.value = false
+  }
+}
+
+// Fetch data on component mount
+onMounted(() => {
+  fetchBlogsData()
+})
+
 // Infinite scroll logic
 const displayBlogs = computed(() => {
-  const total = blogs.length
+  if (blogs.value.length === 0) return []
   const cloneCount = visibleItems
-  const startClones = blogs.slice(-cloneCount)
-  const endClones = blogs.slice(0, cloneCount)
-  return [...startClones, ...blogs, ...endClones]
+  const startClones = blogs.value.slice(-cloneCount)
+  const endClones = blogs.value.slice(0, cloneCount)
+  return [...startClones, ...blogs.value, ...endClones]
 })
 
 function nextSlide() {
+  if (blogs.value.length === 0) return
   currentIndex.value++
-  if (currentIndex.value >= blogs.length + visibleItems) {
+  if (currentIndex.value >= blogs.value.length + visibleItems) {
     setTimeout(() => {
       currentIndex.value = visibleItems
     }, 600)
@@ -90,15 +150,17 @@ function nextSlide() {
 }
 
 function prevSlide() {
+  if (blogs.value.length === 0) return
   currentIndex.value--
   if (currentIndex.value < 0) {
     setTimeout(() => {
-      currentIndex.value = blogs.length - 1
+      currentIndex.value = blogs.value.length - 1
     }, 600)
   }
 }
 
 function goToSlide(index) {
+  if (blogs.value.length === 0) return
   currentIndex.value = index
 }
 </script>
@@ -120,7 +182,7 @@ function goToSlide(index) {
   position: relative;
 }
 
-/* ---------- Heading Section ---------- */
+/* Heading Section */
 .section-heading {
   margin-bottom: 3rem;
   text-align: center;
@@ -143,7 +205,7 @@ function goToSlide(index) {
   color: #ffffff;
 }
 
-/* ---------- Carousel Section ---------- */
+/* Carousel Section */
 .carousel-container {
   position: relative;
   max-width: 1100px;
@@ -194,7 +256,7 @@ function goToSlide(index) {
   line-height: 1.5;
 }
 
-/* ---------- Arrows ---------- */
+/* Arrows */
 .arrow {
   position: absolute;
   top: 45%;
@@ -219,7 +281,7 @@ function goToSlide(index) {
   right: -60px;
 }
 
-/* ---------- Dots ---------- */
+/* Dots */
 .dots {
   margin-top: 2rem;
   display: flex;
@@ -240,7 +302,80 @@ function goToSlide(index) {
   background: #b37cf7;
 }
 
-/* ---------- Responsive ---------- */
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #333;
+  border-top-color: #b37cf7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* Error State */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.retry-btn {
+  background: linear-gradient(90deg, #b37cf7, #8b5cf6);
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(179, 124, 247, 0.4);
+}
+
+/* Arrow Disabled State */
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.arrow:disabled:hover {
+  opacity: 0.3;
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
   .blog-card {
     flex: 0 0 50%;

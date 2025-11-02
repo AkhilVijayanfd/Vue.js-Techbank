@@ -1,0 +1,36 @@
+{
+  "products": [
+    {
+      "image": "dwallet.png",
+      "title": "DWALLET",
+      "description": "A secure, intuitive crypto wallet for managing your digital assets."
+    },
+    {
+      "image": "dbank.png",
+      "title": "DBANK",
+      "description": "A secure staking platform for earning rewards on your digital assets."
+    }
+  ],
+  "technologies": {
+    "topRow": [
+      "Logo110.png",
+      "Logo29.png",
+      "Logo311.png",
+      "Logo412.png",
+      "Logo57.png",
+      "Logo68.png"
+    ],
+    "bottomRow": [
+      "Logo57.png",
+      "Logo68.png",
+      "Logo29.png",
+      "Logo110.png",
+      "Logo311.png",
+      "Logo412.png"
+    ]
+  },
+  "productsSubtitle": "Innovative",
+  "productsTitle": "PRODUCTS",
+  "technologiesTitle": "TECHNOLOGIES"
+}
+

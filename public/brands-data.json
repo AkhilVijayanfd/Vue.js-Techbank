@@ -1,0 +1,22 @@
+{
+  "brands": [
+    {
+      "image": "BTigers.png",
+      "name": "BLUE TIGERS",
+      "description": "Fueling the future of film, sports, and technology."
+    },
+    {
+      "image": "LBTigers.png",
+      "name": "KOCHI BLUE TIGERS",
+      "description": "A dynamic cricket team redefining the game with passion and power."
+    },
+    {
+      "image": "KBTigers.png",
+      "name": "BLUE TIGERS LONDON",
+      "description": "A creative production house bringing bold stories to life."
+    }
+  ],
+  "sectionTitle": "OUR CONNECTED BRANDS",
+  "subText": "From One Root, Many Branches"
+}
+

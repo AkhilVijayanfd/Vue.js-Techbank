@@ -1,24 +1,101 @@
 <template>
   <header class="header">
-    <div class="logo-section">
-      <img :src="logo" alt="TechBank Logo" class="logo-icon" />
-      <span class="logo-text">TechBank</span>
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
     </div>
 
-    <nav class="nav-links">
-      <router-link to="/" class="nav-item">Home</router-link>
-      <a href="#" class="nav-item">Products</a>
-      <a href="#" class="nav-item">Teams</a>
-      <a href="#" class="nav-item">Career</a>
-      <a href="#" class="nav-item">Blog</a>
-    </nav>
+    <!-- Content -->
+    <template v-else>
+      <div class="logo-section">
+        <img :src="logoImage" alt="TechBank Logo" class="logo-icon" />
+        <span class="logo-text">{{ logoText }}</span>
+      </div>
 
-    <router-link to="/contact" class="contact-btn">Contact Us</router-link>
+      <nav class="nav-links">
+        <template v-for="(link, index) in navigationLinks" :key="index">
+          <router-link 
+            v-if="link.type === 'router-link'" 
+            :to="link.route" 
+            class="nav-item"
+          >
+            {{ link.text }}
+          </router-link>
+          <a 
+            v-else 
+            :href="link.url" 
+            class="nav-item"
+          >
+            {{ link.text }}
+          </a>
+        </template>
+      </nav>
+
+      <router-link :to="contactButton.route" class="contact-btn">
+        {{ contactButton.text }}
+      </router-link>
+    </template>
   </header>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import logo from '../assets/logo/tblogo.png'
+
+// Image mapping helper
+const imageMap = {
+  'tblogo.png': logo
+}
+
+// Reactive state - initialized as empty, will be populated from JSON
+const logoImage = ref(null)
+const logoText = ref('')
+const navigationLinks = ref([])
+const contactButton = ref({ text: '', route: '' })
+const loading = ref(true)
+const error = ref(null)
+
+// API endpoint or JSON file path
+const API_URL = '/header-data.json'
+// Alternative: You can use an actual API endpoint like:
+// const API_URL = 'https://your-api.com/api/header'
+
+// Fetch header data from JSON file or API
+const fetchHeaderData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    const response = await fetch(API_URL)
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch header data: ${response.status} ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    
+    // Update all data from JSON
+    if (data.logo) {
+      logoImage.value = data.logo.image ? (imageMap[data.logo.image] || logo) : logo
+      logoText.value = data.logo.text || ''
+    }
+    
+    navigationLinks.value = data.navigationLinks || []
+    contactButton.value = data.contactButton || { text: '', route: '' }
+    
+  } catch (err) {
+    console.error('Error fetching header data:', err)
+    error.value = err.message
+    // Data will remain empty, showing error state
+  } finally {
+    loading.value = false
+  }
+}
+
+// Fetch data on component mount
+onMounted(() => {
+  fetchHeaderData()
+})
 </script>
 
 <style scoped>
@@ -98,5 +175,29 @@ import logo from '../assets/logo/tblogo.png'
   background-color: #b37cf7;
   border-color: #b37cf7;
   color: #ffffff;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #b37cf7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

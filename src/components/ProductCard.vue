@@ -40,7 +40,7 @@ defineProps({
   transform: translateY(-6px);
 }
 
-/* ✅ image fix — fills top space properly, no breaking */
+/* image fix — fills top space properly, no breaking */
 .product-image-container {
   width: 100%;
   height: 270px;

@@ -1,69 +1,161 @@
 <template>
   <footer class="footer">
-    <div class="footer-content">
-      <!-- Left column: logo / tagline / contact + socials -->
-      <div class="footer-left">
-        <div class="footer-logo">
-          <img :src="tblogo" alt="TechBank small logo" class="tblogo" />
-          <h3 class="footer-title">TechBank</h3>
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading footer...</p>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="error-container">
+      <p class="error-text">{{ error }}</p>
+      <button @click="fetchFooterData" class="retry-btn">Retry</button>
+    </div>
+
+    <!-- Content -->
+    <div v-else>
+      <div class="footer-content">
+        <!-- Left column: logo / tagline / contact + socials -->
+        <div class="footer-left">
+          <div class="footer-logo">
+            <img :src="logoImage" alt="TechBank small logo" class="tblogo" />
+            <h3 class="footer-title">{{ logoTitle }}</h3>
+          </div>
+
+          <h4 class="footer-tagline" v-html="tagline"></h4>
+
+          <div class="contact-section">
+            <router-link :to="contactButton.route" class="contact-btn">{{ contactButton.text }}</router-link>
+
+            <!-- social icons now below -->
+            <div class="social-icons">
+              <a 
+                v-for="(social, index) in socialLinks" 
+                :key="index"
+                :href="social.url" 
+                class="social"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i :class="social.icon"></i>
+              </a>
+            </div>
+          </div>
         </div>
 
-        <h4 class="footer-tagline">ENGINEERING<br />THE FUTURE</h4>
+        <!-- Right column: links & offices -->
+        <div class="footer-right">
+          <div class="footer-links">
+            <ul>
+              <li v-for="(link, index) in navigationLinks" :key="index">
+                <a :href="link.url">{{ link.text }}</a>
+              </li>
+            </ul>
+          </div>
 
-        <div class="contact-section">
-          <router-link to="/contact" class="contact-btn">CONTACT&nbsp;US</router-link>
-
-          <!-- social icons now below -->
-          <div class="social-icons">
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" class="social"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social"><i class="fab fa-youtube"></i></a>
+          <div class="footer-office">
+            <h4>{{ offices.title }}</h4>
+            <p v-for="(location, index) in offices.locations" :key="index">{{ location }}</p>
           </div>
         </div>
       </div>
 
-      <!-- Right column: links & offices -->
-      <div class="footer-right">
-        <div class="footer-links">
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Teams</a></li>
-            <li><a href="#">Career</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
+      <!-- Bottom row: centered copyright, policies to right -->
+      <div class="footer-bottom">
+        <div class="bottom-left-spacer"></div>
+
+        <div class="bottom-center">
+          <p class="copyright">{{ copyright }}</p>
         </div>
 
-        <div class="footer-office">
-          <h4>Offices</h4>
-          <p>Infopark</p>
-          <p>Kochi - Kerala</p>
+        <div class="bottom-right">
+          <a 
+            v-for="(policy, index) in policies" 
+            :key="index"
+            :href="policy.url" 
+            class="policy"
+          >
+            {{ policy.text }}
+          </a>
         </div>
       </div>
+
+      <!-- large background watermark -->
+      <div class="footer-bg-text">{{ watermark }}</div>
     </div>
-
-    <!-- Bottom row: centered copyright, policies to right -->
-    <div class="footer-bottom">
-      <div class="bottom-left-spacer"></div>
-
-      <div class="bottom-center">
-        <p class="copyright">© 2025 TechBank</p>
-      </div>
-
-      <div class="bottom-right">
-        <a href="#" class="policy">Privacy Policy</a>
-        <a href="#" class="policy">Terms and Conditions</a>
-      </div>
-    </div>
-
-    <!-- large background watermark -->
-    <div class="footer-bg-text">TECHBANK</div>
   </footer>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import tblogo from '../assets/logo/tblogo.png'
+
+// Image mapping helper
+const imageMap = {
+  'tblogo.png': tblogo
+}
+
+// Reactive state - initialized as empty, will be populated from JSON
+const logoImage = ref(null)
+const logoTitle = ref('')
+const tagline = ref('')
+const contactButton = ref({ text: '', route: '' })
+const socialLinks = ref([])
+const navigationLinks = ref([])
+const offices = ref({ title: '', locations: [] })
+const copyright = ref('')
+const policies = ref([])
+const watermark = ref('')
+const loading = ref(true)
+const error = ref(null)
+
+// API endpoint or JSON file path
+const API_URL = '/footer-data.json'
+// Alternative: You can use an actual API endpoint like:
+// const API_URL = 'https://your-api.com/api/footer'
+
+// Fetch footer data from JSON file or API
+const fetchFooterData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    const response = await fetch(API_URL)
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch footer data: ${response.status} ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    
+    // Update all data from JSON
+    if (data.logo) {
+      logoImage.value = data.logo.image ? (imageMap[data.logo.image] || tblogo) : tblogo
+      logoTitle.value = data.logo.title || ''
+    }
+    
+    tagline.value = data.tagline || ''
+    contactButton.value = data.contactButton || { text: '', route: '' }
+    socialLinks.value = data.socialLinks || []
+    navigationLinks.value = data.navigationLinks || []
+    offices.value = data.offices || { title: '', locations: [] }
+    copyright.value = data.copyright || ''
+    policies.value = data.policies || []
+    watermark.value = data.watermark || ''
+    
+  } catch (err) {
+    console.error('Error fetching footer data:', err)
+    error.value = err.message
+    // Data will remain empty, showing error state
+  } finally {
+    loading.value = false
+  }
+}
+
+// Fetch data on component mount
+onMounted(() => {
+  fetchFooterData()
+})
 </script>
 
 <style scoped>
@@ -275,8 +367,73 @@ import tblogo from '../assets/logo/tblogo.png'
   line-height: 0.8;
 }
 
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+  min-height: 300px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #b517ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+
+/* Error State */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+  min-height: 300px;
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.retry-btn {
+  background: linear-gradient(90deg, #b517ff, #9333ea);
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(181, 23, 255, 0.4);
+}
+
 /* RESPONSIVE */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .footer {
     padding: 3rem 2rem 2.5rem;
   }

@@ -88,7 +88,7 @@ const validate = () => {
 
 const handleSubmit = () => {
   if (validate()) {
-    alert("✅ Data saved successfully!");
+    alert("Data saved successfully!");
     form.name = "";
     form.email = "";
     form.phone = "";
@@ -98,7 +98,7 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
-/* -------------------- BASE SECTION -------------------- */
+/* BASE SECTION*/
 .contact-section {
   background: #000;
   color: #fff;
@@ -110,7 +110,7 @@ const handleSubmit = () => {
   font-family: "Poppins", sans-serif;
 }
 
-/* -------------------- FLEX LAYOUT -------------------- */
+/* FLEX LAYOUT*/
 .contact-container {
   display: flex;
   justify-content: space-between;
@@ -120,7 +120,7 @@ const handleSubmit = () => {
   gap: 2.5rem;
 }
 
-/* -------------------- LEFT IMAGE -------------------- */
+/* LEFT IMAGE */
 .contact-left {
   flex: 1;
   display: flex;
@@ -141,7 +141,7 @@ const handleSubmit = () => {
   transform: scale(1.02);
 }
 
-/* -------------------- RIGHT FORM -------------------- */
+/* RIGHT FORM */
 .contact-right {
   flex: 1;
   padding-top: 0;
@@ -167,7 +167,7 @@ const handleSubmit = () => {
   line-height: 1.2;
 }
 
-/* -------------------- FORM STYLES -------------------- */
+/* FORM STYLES */
 .contact-form {
   width: 100%;
   display: flex;
@@ -204,7 +204,7 @@ const handleSubmit = () => {
   outline: none;
 }
 
-/* -------------------- PHONE INPUT -------------------- */
+/* PHONE INPUT */
 .phone-input {
   display: flex;
   align-items: center;
@@ -230,14 +230,14 @@ const handleSubmit = () => {
   outline: none;
 }
 
-/* -------------------- ERROR TEXT -------------------- */
+/* ERROR TEXT */
 .error {
   color: #ff4d4d;
   font-size: 0.8rem;
   margin-top: 0.2rem;
 }
 
-/* -------------------- BUTTON -------------------- */
+/* BUTTON */
 .submit-btn {
   background: linear-gradient(90deg, #b37cf7, #8b5cf6);
   border: none;
@@ -256,7 +256,7 @@ const handleSubmit = () => {
   box-shadow: 0 4px 15px rgba(179, 124, 247, 0.4);
 }
 
-/* -------------------- RESPONSIVE -------------------- */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .contact-container {
     flex-direction: column;

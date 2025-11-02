@@ -1,0 +1,38 @@
+{
+  "logo": {
+    "image": "tblogo.png",
+    "text": "TechBank"
+  },
+  "navigationLinks": [
+    {
+      "text": "Home",
+      "route": "/",
+      "type": "router-link"
+    },
+    {
+      "text": "Products",
+      "url": "#",
+      "type": "anchor"
+    },
+    {
+      "text": "Teams",
+      "url": "#",
+      "type": "anchor"
+    },
+    {
+      "text": "Career",
+      "url": "#",
+      "type": "anchor"
+    },
+    {
+      "text": "Blog",
+      "url": "#",
+      "type": "anchor"
+    }
+  ],
+  "contactButton": {
+    "text": "Contact Us",
+    "route": "/contact"
+  }
+}
+

@@ -1,6 +1,9 @@
 <template>
   <section class="blogs-section">
-    <h2 class="section-title">TECHBANK BLOGS</h2>
+    <div class="section-heading">
+      <h2 class="heading-top">Techbank</h2>
+      <h3 class="heading-bottom">BLOGS</h3>
+    </div>
 
     <div class="carousel-container">
       <!-- Left Arrow -->
@@ -58,17 +61,17 @@ import BlogImage3 from '../assets/BlogImage3.png'
 
 const blogs = [
   { image: BlogImage1, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
-  { image: BlogImage2, title: 'BLOCKCHAIN BANKING', desc: 'Revolutionizing the finance ecosystem with decentralized technology.' },
-  { image: BlogImage3, title: 'TECH INNOVATION', desc: 'Exploring next-gen solutions in digital transformation.' },
-  { image: BlogImage1, title: 'SMART CONTRACTS', desc: 'Empowering transparency and automation with smart contract integration.' },
-  { image: BlogImage2, title: 'CRYPTO WALLET', desc: 'Securely store, manage, and transact your digital assets.' },
-  { image: BlogImage3, title: 'FINTECH FUTURE', desc: 'Driving change through innovation and AI-driven insights.' }
+  { image: BlogImage2, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
+  { image: BlogImage3, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
+  { image: BlogImage1, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
+  { image: BlogImage2, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' },
+  { image: BlogImage3, title: 'SMART AI CHATBOT', desc: 'Enhance customer engagement with personalized, AI-driven interactions.' }
 ]
 
 const currentIndex = ref(0)
 const visibleItems = 3
 
-// Infinite scroll logic — duplicate items at start and end
+// Infinite scroll logic
 const displayBlogs = computed(() => {
   const total = blogs.length
   const cloneCount = visibleItems
@@ -77,12 +80,9 @@ const displayBlogs = computed(() => {
   return [...startClones, ...blogs, ...endClones]
 })
 
-const totalSlides = computed(() => displayBlogs.value.length)
-
 function nextSlide() {
   currentIndex.value++
   if (currentIndex.value >= blogs.length + visibleItems) {
-    // Smooth infinite reset
     setTimeout(() => {
       currentIndex.value = visibleItems
     }, 600)
@@ -92,7 +92,6 @@ function nextSlide() {
 function prevSlide() {
   currentIndex.value--
   if (currentIndex.value < 0) {
-    // Smooth infinite reset
     setTimeout(() => {
       currentIndex.value = blogs.length - 1
     }, 600)
@@ -105,23 +104,46 @@ function goToSlide(index) {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: 'PoppinsCustom';
+  src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .blogs-section {
-  background-color: #000;
+  background-color: #010101;
   color: #fff;
   text-align: center;
   padding: 6rem 0 4rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'PoppinsCustom', sans-serif;
   position: relative;
 }
 
-.section-title {
-  font-size: 1.8rem;
+/* ---------- Heading Section ---------- */
+.section-heading {
   margin-bottom: 3rem;
-  color: #b37cf7;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.2;
 }
 
+.heading-top {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #b37cf7;
+  text-transform: capitalize;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.5px;
+}
+
+.heading-bottom {
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* ---------- Carousel Section ---------- */
 .carousel-container {
   position: relative;
   max-width: 1100px;
@@ -161,7 +183,9 @@ function goToSlide(index) {
 
 .blog-content h3 {
   font-size: 1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 .blog-content p {
@@ -170,7 +194,7 @@ function goToSlide(index) {
   line-height: 1.5;
 }
 
-/* Arrows */
+/* ---------- Arrows ---------- */
 .arrow {
   position: absolute;
   top: 45%;
@@ -195,7 +219,7 @@ function goToSlide(index) {
   right: -60px;
 }
 
-/* Dots */
+/* ---------- Dots ---------- */
 .dots {
   margin-top: 2rem;
   display: flex;
@@ -216,7 +240,7 @@ function goToSlide(index) {
   background: #b37cf7;
 }
 
-/* Responsive */
+/* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
   .blog-card {
     flex: 0 0 50%;

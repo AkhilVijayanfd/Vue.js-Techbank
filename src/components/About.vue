@@ -14,7 +14,7 @@
       </div>
       <div class="stat-box">
         <h3>2000+</h3>
-        <p>Clients</p>
+        <p>Active Users</P>
       </div>
       <div class="stat-box">
         <h3>1M+</h3>
@@ -60,7 +60,6 @@
 .stat-box h3 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #b37cf7; /* purple accent */
 }
 
 .stat-box p {

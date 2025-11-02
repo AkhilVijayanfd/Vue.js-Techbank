@@ -1,15 +1,27 @@
 <template>
   <section class="brands-section">
-    <h2 class="section-title">OUR CONNECTED BRANDS</h2>
+    <div class="section-header">
+      <p class="sub-text">From One Root, Many Branches</p>
+      <h2 class="section-title">OUR CONNECTED BRANDS</h2>
+    </div>
 
     <div class="brands-grid">
       <div class="brand-card" v-for="(brand, index) in brands" :key="index">
-        <div class="logo-container">
-          <img :src="brand.image" :alt="brand.name" class="brand-logo" />
-          <div class="platform"></div>
+        <div class="brand-header">
+          <h3 class="brand-title">{{ brand.name }}</h3>
+          <p class="brand-sub">{{ brand.description }}</p>
+
+          <div class="icon-row">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-youtube"></i>
+          </div>
         </div>
-        <h3 class="brand-name">{{ brand.name }}</h3>
-        <p class="brand-desc">{{ brand.description }}</p>
+
+        <div class="logo-wrapper">
+          <img :src="brand.image" :alt="brand.name" class="brand-logo" />
+        </div>
       </div>
     </div>
   </section>
@@ -24,17 +36,17 @@ const brands = [
   {
     image: BTigers,
     name: 'BLUE TIGERS',
-    description: 'Our global esports and gaming partner network.',
+    description: 'Fueling the future of film, sports, and technology.',
   },
   {
-    image: KBTigers,
+    image: LTigers, // ✅ swapped here (previously KBTigers)
     name: 'KOCHI BLUE TIGERS',
-    description: 'Regional branch delivering next-level gaming innovation.',
+    description: 'A dynamic cricket team redefining the game with passion and power.',
   },
   {
-    image: LTigers,
+    image: KBTigers, // ✅ swapped here (previously LTigers)
     name: 'BLUE TIGERS LONDON',
-    description: 'Expanding innovation across Europe and beyond.',
+    description: 'A creative production house bringing bold stories to life.',
   },
 ]
 </script>
@@ -43,78 +55,116 @@ const brands = [
 .brands-section {
   background-color: #000;
   color: #fff;
-  text-align: center;
-  padding: 6rem 2rem;
+  padding: 6rem 8rem;
   font-family: 'Poppins', sans-serif;
+}
+
+/* ✅ Centered section title */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sub-text {
+  color: #b37cf7;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.8;
 }
 
 .section-title {
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: 1px;
-  margin-bottom: 3.5rem;
-  color: #b37cf7;
+  color: #fff;
 }
 
+/* ✅ 3 Cards aligned in one row */
 .brands-grid {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 3rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 2.5rem;
 }
 
+/* ✅ Card Styling */
 .brand-card {
   background: linear-gradient(180deg, #0a0a0a, #151515);
   border-radius: 20px;
-  width: 260px;
+  width: 340px;
   padding: 2rem 1.5rem 2.5rem;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(179, 124, 247, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  box-shadow: inset 0 0 10px rgba(179, 124, 247, 0.15);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 470px;
 }
 
 .brand-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 35px rgba(179, 124, 247, 0.4);
+  transform: translateY(-8px);
 }
 
-.logo-container {
-  position: relative;
-  margin-bottom: 1.8rem;
+/* ✅ Left aligned content */
+.brand-header {
+  text-align: left;
 }
 
-.brand-logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  z-index: 2;
-  position: relative;
-}
-
-.platform {
-  width: 80%;
-  height: 14px;
-  background: #0d0d0d;
-  border-radius: 50%;
-  margin: 0 auto;
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 8px 15px rgba(179, 124, 247, 0.3);
-}
-
-.brand-name {
+.brand-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #b37cf7;
+  color: #fff;
   margin-bottom: 0.5rem;
 }
 
-.brand-desc {
-  font-size: 0.9rem;
+.brand-sub {
+  font-size: 0.85rem;
   color: #ccc;
-  opacity: 0.9;
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+/* ✅ Icons with neutral color */
+.icon-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.icon-row i {
+  font-size: 1rem;
+  color: #ccc;
+  transition: color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.icon-row i:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* ✅ Image Section (centered and enlarged) */
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.brand-logo {
+  width: 220px;
+  height: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0;
+}
+
+/* 🚫 Removed the round shadow completely */
+.brand-podium {
+  display: none;
 }
 </style>

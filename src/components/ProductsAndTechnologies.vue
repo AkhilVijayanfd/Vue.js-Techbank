@@ -1,7 +1,10 @@
 <template>
   <section class="products-section">
     <!-- PRODUCTS -->
-    <h2 class="section-title">INNOVATIVE PRODUCTS</h2>
+    <div class="products-header">
+      <span class="products-subtitle">Innovative</span>
+      <h2 class="products-title">PRODUCTS</h2>
+    </div>
 
     <div class="products-grid">
       <ProductCard
@@ -16,22 +19,30 @@
       />
     </div>
 
-    <!-- TECHNOLOGIES -->
+    <!-- TECHNOLOGIES (unchanged) -->
     <div class="technologies-section">
       <h2 class="section-title">TECHNOLOGIES</h2>
 
-      <!-- Two rows of 6 logos each -->
       <div class="tech-logos">
         <div class="logo-row">
-          <img v-for="(logo, index) in topRow" :key="'top-' + index" :src="logo" alt="Technology Logo" />
+          <img
+            v-for="(logo, index) in topRow"
+            :key="'top-' + index"
+            :src="logo"
+            alt="Technology Logo"
+          />
         </div>
         <div class="logo-row">
-          <img v-for="(logo, index) in bottomRow" :key="'bottom-' + index" :src="logo" alt="Technology Logo" />
+          <img
+            v-for="(logo, index) in bottomRow"
+            :key="'bottom-' + index"
+            :src="logo"
+            alt="Technology Logo"
+          />
         </div>
       </div>
     </div>
 
-    <!-- CONNECTED BRANDS -->
     <ConnectedBrands />
   </section>
 </template>
@@ -44,7 +55,7 @@ import ConnectedBrands from './ConnectedBrands.vue'
 import dwallet from '../assets/dwallet.png'
 import dbank from '../assets/dbank.png'
 
-// Technology logos (mirrored arrangement)
+// Technology logos
 import logo110 from '../assets/logo/logo110.png'
 import logo29 from '../assets/logo/logo29.png'
 import logo311 from '../assets/logo/logo311.png'
@@ -58,33 +69,49 @@ const bottomRow = [logo57, logo68, logo29, logo110, logo311, logo412]
 
 <style scoped>
 .products-section {
-  background-color: #000;
+  background: #000;
   color: #fff;
   text-align: center;
   padding: 6rem 2rem;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Section title */
-.section-title {
-  font-size: 1.8rem;
-  letter-spacing: 1px;
-  margin-bottom: 3rem;
-  color: #b37cf7;
-  text-transform: uppercase;
+/* PRODUCTS */
+.products-header {
+  margin-bottom: 3.5rem;
 }
 
-/* Product cards */
+.products-subtitle {
+  color: #b37cf7;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.products-title {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
 .products-grid {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 3rem;
+  margin-top: 2rem;
 }
 
-/* Technologies */
+/* TECHNOLOGIES (unchanged) */
 .technologies-section {
   margin-top: 8rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
 }
 
 .tech-logos {
@@ -92,7 +119,6 @@ const bottomRow = [logo57, logo68, logo29, logo110, logo311, logo412]
   flex-direction: column;
   align-items: center;
   gap: 2.5rem;
-  margin-top: 3rem;
 }
 
 .logo-row {
@@ -106,7 +132,7 @@ const bottomRow = [logo57, logo68, logo29, logo110, logo311, logo412]
 .logo-row img {
   width: 110px;
   opacity: 0.8;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .logo-row img:hover {

@@ -43,7 +43,7 @@ defineProps({
 /* image fix — fills top space properly, no breaking */
 .product-image-container {
   width: 100%;
-  height: 270px;
+  height: 300px;
   overflow: hidden;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }

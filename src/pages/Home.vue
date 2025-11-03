@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import homeimage from '../assets/homeimage.png'
+import homeimage from '../assets/HomeImage.png'
 </script>
 
 <style scoped>

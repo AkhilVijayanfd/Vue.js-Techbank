@@ -72,65 +72,55 @@ import BlogImage1 from '../assets/BlogImage1.png'
 import BlogImage2 from '../assets/BlogImage2.png'
 import BlogImage3 from '../assets/BlogImage3.png'
 
-// Image mapping helper - maps image filenames to imported image modules
+// Image mapping
 const imageMap = {
   'BlogImage1.png': BlogImage1,
   'BlogImage2.png': BlogImage2,
   'BlogImage3.png': BlogImage3
 }
 
-// Reactive state
 const blogs = ref([])
 const loading = ref(true)
 const error = ref(null)
 const currentIndex = ref(0)
-const visibleItems = 3
 
-// API endpoint or JSON file path
+// ✅ Responsive visible item logic
+const visibleItems = window.innerWidth < 768 ? 1 : 3
+
 const API_URL = '/blogs-data.json'
-// Alternative: You can use an actual API endpoint like:
-// const API_URL = 'https://your-api.com/api/blogs'
 
-// Fetch blogs data from JSON file or API
+// Fetch blogs data
 const fetchBlogsData = async () => {
   try {
     loading.value = true
     error.value = null
-    
+
     const response = await fetch(API_URL)
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch blogs data: ${response.status} ${response.statusText}`)
-    }
-    
+    if (!response.ok) throw new Error(`Failed to fetch blogs data: ${response.status} ${response.statusText}`)
+
     const data = await response.json()
-    
-    // Map the fetched data and resolve image paths
+
     blogs.value = data.blogs.map(blog => ({
       ...blog,
-      image: imageMap[blog.image] || blog.image // Use mapped image or fallback to original path
+      image: imageMap[blog.image] || blog.image
     }))
-    
-    // Reset carousel to start position when data is loaded
+
     if (blogs.value.length > 0) {
       currentIndex.value = visibleItems
     }
-    
   } catch (err) {
     console.error('Error fetching blogs data:', err)
     error.value = err.message
-    // Data will remain empty array, showing error state instead
   } finally {
     loading.value = false
   }
 }
 
-// Fetch data on component mount
 onMounted(() => {
   fetchBlogsData()
 })
 
-// Infinite scroll logic
+// Carousel logic
 const displayBlogs = computed(() => {
   if (blogs.value.length === 0) return []
   const cloneCount = visibleItems
@@ -182,7 +172,7 @@ function goToSlide(index) {
   position: relative;
 }
 
-/* Heading Section */
+/* Headings */
 .section-heading {
   margin-bottom: 3rem;
   text-align: center;
@@ -205,7 +195,7 @@ function goToSlide(index) {
   color: #ffffff;
 }
 
-/* Carousel Section */
+/* Carousel */
 .carousel-container {
   position: relative;
   max-width: 1100px;
@@ -281,6 +271,11 @@ function goToSlide(index) {
   right: -60px;
 }
 
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 /* Dots */
 .dots {
   margin-top: 2rem;
@@ -302,8 +297,9 @@ function goToSlide(index) {
   background: #b37cf7;
 }
 
-/* Loading State */
-.loading-container {
+/* Loading and Error */
+.loading-container,
+.error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -332,16 +328,6 @@ function goToSlide(index) {
   font-size: 1rem;
 }
 
-/* Error State */
-.error-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  gap: 1rem;
-}
-
 .error-text {
   color: #ff4d4d;
   font-size: 1rem;
@@ -365,17 +351,7 @@ function goToSlide(index) {
   box-shadow: 0 4px 15px rgba(179, 124, 247, 0.4);
 }
 
-/* Arrow Disabled State */
-.arrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.arrow:disabled:hover {
-  opacity: 0.3;
-}
-
-/* Responsive */
+/* Tablet */
 @media (max-width: 1024px) {
   .blog-card {
     flex: 0 0 50%;
@@ -388,12 +364,67 @@ function goToSlide(index) {
   }
 }
 
-@media (max-width: 768px) {
+/* ✅ Mobile Responsive Fix (below 767px) */
+@media (max-width: 767px) {
+  .carousel-container {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .carousel {
+    display: flex;
+    transition: transform 0.6s ease;
+  }
+
   .blog-card {
     flex: 0 0 100%;
+    padding: 0;
   }
+
+  .blog-image {
+    height: auto;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+    object-fit: cover;
+  }
+
+  .blog-content {
+    text-align: center;
+    background: #111;
+    border-radius: 0 0 16px 16px;
+    padding: 1rem 1.2rem;
+  }
+
+  .blog-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .blog-content p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
   .arrow {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arrow.left {
+    left: 10px;
+  }
+  .arrow.right {
+    right: 10px;
+  }
+  .arrow svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .dots {
+    margin-top: 1.5rem;
+    justify-content: center;
   }
 }
 </style>

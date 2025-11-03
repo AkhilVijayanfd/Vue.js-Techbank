@@ -1,100 +1,120 @@
 <template>
   <header class="header">
-    <!-- Loading State -->
-    <div v-if="loading" class="loading-container">
-      <div class="loading-spinner"></div>
+    <!-- Logo -->
+    <div class="logo-section">
+      <img :src="logoImage" alt="TechBank Logo" class="logo-icon" />
+      <span class="logo-text">{{ logoText }}</span>
     </div>
 
-    <!-- Content -->
-    <template v-else>
-      <div class="logo-section">
-        <img :src="logoImage" alt="TechBank Logo" class="logo-icon" />
-        <span class="logo-text">{{ logoText }}</span>
-      </div>
+    <!-- Desktop Navigation -->
+    <nav class="nav-links" v-if="!isMobile">
+      <template v-for="(link, index) in navigationLinks" :key="index">
+        <router-link 
+          v-if="link.type === 'router-link'" 
+          :to="link.route" 
+          class="nav-item"
+        >
+          {{ link.text }}
+        </router-link>
+        <a 
+          v-else 
+          :href="link.url" 
+          class="nav-item"
+        >
+          {{ link.text }}
+        </a>
+      </template>
+    </nav>
 
-      <nav class="nav-links">
+    <!-- Contact Button (Desktop only) -->
+    <router-link 
+      v-if="!isMobile"
+      :to="contactButton.route"
+      class="contact-btn"
+    >
+      {{ contactButton.text }}
+    </router-link>
+
+    <!-- Mobile Hamburger Icon -->
+    <div class="hamburger" v-if="isMobile" @click="toggleMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <transition name="slide-fade">
+      <div v-if="menuOpen" class="mobile-menu">
         <template v-for="(link, index) in navigationLinks" :key="index">
           <router-link 
             v-if="link.type === 'router-link'" 
             :to="link.route" 
-            class="nav-item"
+            class="mobile-item"
+            @click="closeMenu"
           >
             {{ link.text }}
           </router-link>
           <a 
             v-else 
             :href="link.url" 
-            class="nav-item"
+            class="mobile-item"
+            @click="closeMenu"
           >
             {{ link.text }}
           </a>
         </template>
-      </nav>
 
-      <router-link :to="contactButton.route" class="contact-btn">
-        {{ contactButton.text }}
-      </router-link>
-    </template>
+        <router-link 
+          :to="contactButton.route" 
+          class="mobile-contact"
+          @click="closeMenu"
+        >
+          {{ contactButton.text }}
+        </router-link>
+      </div>
+    </transition>
   </header>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import logo from '../assets/logo/tblogo.png'
 
-// Image mapping helper
-const imageMap = {
-  'tblogo.png': logo
-}
+const logoImage = ref(logo)
+const logoText = ref('TechBank')
+const navigationLinks = ref([
+  { text: 'Home', type: 'router-link', route: '/' },
+  { text: 'Products', type: 'router-link', route: '/products' },
+  { text: 'Teams', type: 'router-link', route: '/teams' },
+  { text: 'Career', type: 'router-link', route: '/career' },
+  { text: 'Blog', type: 'router-link', route: '/blog' }
+])
+const contactButton = ref({ text: 'Contact Us', route: '/contact' })
 
-// Reactive state - initialized as empty, will be populated from JSON
-const logoImage = ref(null)
-const logoText = ref('')
-const navigationLinks = ref([])
-const contactButton = ref({ text: '', route: '' })
-const loading = ref(true)
-const error = ref(null)
+const isMobile = ref(false)
+const menuOpen = ref(false)
 
-// API endpoint or JSON file path
-const API_URL = '/header-data.json'
-// Alternative: You can use an actual API endpoint like:
-// const API_URL = 'https://your-api.com/api/header'
+const toggleMenu = () => (menuOpen.value = !menuOpen.value)
+const closeMenu = () => (menuOpen.value = false)
 
-// Fetch header data from JSON file or API
-const fetchHeaderData = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    
-    const response = await fetch(API_URL)
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch header data: ${response.status} ${response.statusText}`)
-    }
-    
-    const data = await response.json()
-    
-    // Update all data from JSON
-    if (data.logo) {
-      logoImage.value = data.logo.image ? (imageMap[data.logo.image] || logo) : logo
-      logoText.value = data.logo.text || ''
-    }
-    
-    navigationLinks.value = data.navigationLinks || []
-    contactButton.value = data.contactButton || { text: '', route: '' }
-    
-  } catch (err) {
-    console.error('Error fetching header data:', err)
-    error.value = err.message
-    // Data will remain empty, showing error state
-  } finally {
-    loading.value = false
-  }
-}
+let mediaQuery
 
-// Fetch data on component mount
 onMounted(() => {
-  fetchHeaderData()
+  // Setup reactive media query
+  mediaQuery = window.matchMedia('(max-width: 743px)')
+  const updateScreen = () => {
+    isMobile.value = mediaQuery.matches
+    if (!isMobile.value) menuOpen.value = false
+  }
+
+  updateScreen()
+  mediaQuery.addEventListener('change', updateScreen)
+})
+
+onUnmounted(() => {
+  if (mediaQuery) {
+    mediaQuery.removeEventListener('change', updateScreen)
+  }
 })
 </script>
 
@@ -103,19 +123,18 @@ onMounted(() => {
 @font-face {
   font-family: 'Nineta';
   src: url('@/assets/fonts/Nineta-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #000000;
-  color: #ffffff;
-  padding: 1rem 3rem;
-  height: 100px;
-  font-family: 'Poppins', sans-serif;
+  background-color: #000;
+  color: #fff;
+  padding: 1rem 2rem;
+  height: 90px;
+  position: relative;
+  z-index: 50;
 }
 
 .logo-section {
@@ -125,7 +144,7 @@ onMounted(() => {
 }
 
 .logo-icon {
-  width: 33px;
+  width: 34px;
   height: auto;
 }
 
@@ -133,71 +152,120 @@ onMounted(() => {
   font-family: 'Nineta', sans-serif;
   font-size: 18px;
   letter-spacing: 0.5px;
-  color: #ffffff;
 }
 
 .nav-links {
   display: flex;
   gap: 2rem;
-  margin-left: -180px; /* adjust to balance center alignment similar to Figma */
 }
 
 .nav-item {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
-  font-weight: 400;
 }
 
 .nav-item:hover {
   color: #b37cf7;
 }
 
-.router-link-active {
-  color: #b37cf7;
-}
-
 .contact-btn {
-  background-color: transparent;
-  border: 1.2px solid #ffffff;
-  color: #ffffff;
-  padding: 0.5rem 1.3rem;
+  border: 1.3px solid #fff;
   border-radius: 25px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease;
+  padding: 0.5rem 1.2rem;
+  color: #fff;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
 }
 
 .contact-btn:hover {
   background-color: #b37cf7;
   border-color: #b37cf7;
-  color: #ffffff;
 }
 
-/* Loading State */
-.loading-container {
+/* Hamburger Icon */
+.hamburger {
+  width: 28px;
+  height: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  left: -12px; /* Slightly moved left for center balance */
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: absolute;
+  top: 90px;
+  left: 0;
   width: 100%;
-  height: 100px;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  gap: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
 }
 
-.loading-spinner {
-  width: 30px;
-  height: 30px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #b37cf7;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.mobile-item {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+.mobile-item:hover {
+  color: #b37cf7;
+}
+
+.mobile-contact {
+  border: 1.2px solid #fff;
+  border-radius: 25px;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  color: #fff;
+  margin-top: 0.5rem;
+  transition: all 0.3s;
+}
+
+.mobile-contact:hover {
+  background-color: #b37cf7;
+  border-color: #b37cf7;
+}
+
+/* Smooth Fade Animation */
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.slide-fade-enter-from, .slide-fade-leave-to {
+  opacity: 0;
+}
+
+/* Mobile Styles */
+@media (max-width: 743px) {
+  .nav-links,
+  .contact-btn {
+    display: none;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+
+  .header {
+    padding: 0.8rem 1.2rem;
   }
 }
 </style>

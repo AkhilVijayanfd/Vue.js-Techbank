@@ -1,11 +1,11 @@
 <template>
   <div class="product-card" role="article">
-    <!-- image -->
+    <!-- Image -->
     <div class="product-image-container">
       <img :src="image" :alt="title" class="product-image" />
     </div>
 
-    <!-- content -->
+    <!-- Content -->
     <div class="product-info">
       <h3 class="product-title">{{ title }}</h3>
       <p class="product-description">{{ description }}</p>
@@ -40,7 +40,7 @@ defineProps({
   transform: translateY(-6px);
 }
 
-/* image fix — fills top space properly, no breaking */
+/* image */
 .product-image-container {
   width: 100%;
   height: 300px;
@@ -99,10 +99,30 @@ defineProps({
 /* Responsive */
 @media (max-width: 768px) {
   .product-card {
-    width: 90%;
+    width: 100%;
+    max-width: 95%;
   }
+
   .product-image-container {
-    height: 240px;
+    height: auto;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .product-info {
+    padding: 16px;
+  }
+
+  .product-title {
+    font-size: 1rem;
+  }
+
+  .product-description {
+    font-size: 0.9rem;
   }
 }
 </style>
